@@ -20,7 +20,7 @@ _arguments -C \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -ff --fail-fast -fae --fail-at-end -fn --fail-never)'{-ff,--fail-fast}'[Stop at first failure in reactorized builds]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -fn --fail-never -fae --fail-at-end -ff --fail-fast)'{-fn,--fail-never}'[NEVER fail the build, regardless of project result]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -N --non-recursive)'{-N,--non-recursive}'[Do not recurse into sub-projects]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -o --offline)'{-o,--offline}'[Work offline]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -o --offline -U --update-snapshots -nsu --no-snapshot-updates -up --update-plugins -cpu --check-plugin-updates -npu --no-plugin-updates)'{-o,--offline}'[Work offline]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -P --activate-profiles)'{-P,--activate-profiles}'[Comma-delimited list of profiles to activate]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -pl --projects)'{-pl,--projects}'[Build specified reactor projects instead of all projects. A project can be specified by '\['groupId'\]':artifactId or by its relative path.]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -am --also-make)'{-am,--also-make}'[If project list is specified, also build projects required by the list]' \
@@ -30,11 +30,11 @@ _arguments -C \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -gs --global-settings)'{-gs,--global-settings}'[Alternate path for the global settings file]:global-settings:->global-settings' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -T --threads)'{-T,--threads}'[Thread count, for instance 2.0C where C is core multiplied]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -t --toolchains)'{-t,--toolchains}'[Alternate path for the user toolchains file]:toolchains:->toolchains' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -U --update-snapshots -o --offline)'{-U,--update-snapshots}'[Forces a check for updated releases and snapshots on remote repositories]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -nsu --no-snapshot-updates)'{-nsu,--no-snapshot-updates}'[Supress SNAPSHOT updates]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -up --update-plugins -o --offline)'{-up,--update-plugins}'[Ineffective, only kept for backward compatibility]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -cpu --check-plugin-updates -o --offline)'{-cpu,--check-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npu --no-plugin-updates)'{-npu,--no-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -U --update-snapshots -nsu --no-snapshot-updates -o --offline)'{-U,--update-snapshots}'[Forces a check for updated releases and snapshots on remote repositories]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -nsu --no-snapshot-updates -U --update-snapshots -o --offline)'{-nsu,--no-snapshot-updates}'[Supress SNAPSHOT updates]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -up --update-plugins -npu --no-plugin-updates -o --offline)'{-up,--update-plugins}'[Ineffective, only kept for backward compatibility]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -cpu --check-plugin-updates -npu --no-plugin-updates -o --offline)'{-cpu,--check-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npu --no-plugin-updates -up --update-plugins -cpu --check-plugin-updates -o --offline)'{-npu,--no-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npr --no-plugin-registry)'{-npr,--no-plugin-registry}'[Ineffective, only kept for backward compatibility]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password)'{-D,--define}'[Define a system property]' \
   && ret=0
