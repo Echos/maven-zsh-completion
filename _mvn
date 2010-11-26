@@ -9,8 +9,8 @@ _arguments -C \
   '(- 1 *)'{-ep,--encrypt-password}'[Encrypt server password]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -B --batch-mode)'{-B,--batch-mode}'[Run in non-interactive (batch) mode]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -V,--show-version)'{-V,--show-version}'[Display version information WITHOUT stopping build]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -q --quiet)'{-q,--quiet}'[Quiet output - only show errors]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -X --debug)'{-X,--debug}'[Produce execution debug output]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -q --quiet -X --debug)'{-q,--quiet}'[Quiet output - only show errors]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -X --debug -q --quiet)'{-X,--debug}'[Produce execution debug output]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -N --non-recursive)'{-N,--non-recursive}'[Do not recurse into sub-projects]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -C --strict-checksums)'{-C,--strict-checksums}'[Fail the build if checksums don'\''t match]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -c --lax-checksums)'{-c,--lax-checksums}'[Warn if checksums don'\''t match]' \
