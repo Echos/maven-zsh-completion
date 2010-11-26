@@ -7,35 +7,35 @@ _arguments -C \
   '(- 1 *)'{-v,--version}'[Display version information]' \
   '(- 1 *)'{-emp,--encrypt-master-password}'[Encrypt master security password]' \
   '(- 1 *)'{-ep,--encrypt-password}'[Encrypt server password]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -am --also-make)'{-am,--also-make}'[If project list is specified, also build projects required by the list]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -amd --also-make-dependents)'{-amd,--also-make-dependents}'[If project list is specified, also build projects that depend on projects on the list]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -B --batch-mode)'{-B,--batch-mode}'[Run in non-interactive (batch) mode]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -V,--show-version)'{-V,--show-version}'[Display version information WITHOUT stopping build]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -q --quiet)'{-q,--quiet}'[Quiet output - only show errors]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -X --debug)'{-X,--debug}'[Produce execution debug output]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -C --strict-checksums)'{-C,--strict-checksums}'[Fail the build if checksums don'\''t match]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -c --lax-checksums)'{-c,--lax-checksums}'[Warn if checksums don'\''t match]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -cpu --check-plugin-updates)'{-cpu,--check-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -e --errors)'{-e,--errors}'[Produce execution error messages]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -f --file)'{-f,--file}'[Force the use of an alternate POM file.]:file:->file' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -l --log-file)'{-l,--log-file}'[Log file to where all build output will go.]:log-file:->log-file' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -fae --fail-at-end)'{-fae,--fail-at-end}'[Only fail the build afterwards; allow all non-impacted builds to continue]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -ff --fail-fast)'{-ff,--fail-fast}'[Stop at first failure in reactorized builds]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -fn --fail-never)'{-fn,--fail-never}'[NEVER fail the build, regardless of project result]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -gs --global-settings)'{-gs,--global-settings}'[Alternate path for the global settings file]:global-settings:->global-settings' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -l --log-file)'{-l,--log-file}'[Log file to where all build output will go.]:log-file:->log-file' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -N --non-recursive)'{-N,--non-recursive}'[Do not recurse into sub-projects]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npr --no-plugin-registry)'{-npr,--no-plugin-registry}'[Ineffective, only kept for backward compatibility]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npu --no-plugin-updates)'{-npu,--no-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -nsu --no-snapshot-updates)'{-nsu,--no-snapshot-updates}'[Supress SNAPSHOT updates]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -o --offline)'{-o,--offline}'[Work offline]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -P --activate-profiles)'{-P,--activate-profiles}'[Comma-delimited list of profiles to activate]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -pl --projects)'{-pl,--projects}'[Build specified reactor projects instead of all projects. A project can be specified by '\['groupId'\]':artifactId or by its relative path.]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -q --quiet)'{-q,--quiet}'[Quiet output - only show errors]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -am --also-make)'{-am,--also-make}'[If project list is specified, also build projects required by the list]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -amd --also-make-dependents)'{-amd,--also-make-dependents}'[If project list is specified, also build projects that depend on projects on the list]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -rf --resume-from)'{-rf,--resume-from}'[Resume reactor from specified project]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -s --settings)'{-s,--settings}'[Alternate path for the user settings file]:settings:->settings' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -gs --global-settings)'{-gs,--global-settings}'[Alternate path for the global settings file]:global-settings:->global-settings' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -T --threads)'{-T,--threads}'[Thread count, for instance 2.0C where C is core multiplied]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -t --toolchains)'{-t,--toolchains}'[Alternate path for the user toolchains file]:toolchains:->toolchains' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -U --update-snapshots)'{-U,--update-snapshots}'[Forces a check for updated releases and snapshots on remote repositories]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -nsu --no-snapshot-updates)'{-nsu,--no-snapshot-updates}'[Supress SNAPSHOT updates]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -up --update-plugins)'{-up,--update-plugins}'[Ineffective, only kept for backward compatibility]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -V,--show-version)'{-V,--show-version}'[Display version information WITHOUT stopping build]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -X --debug)'{-X,--debug}'[Produce execution debug output]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -cpu --check-plugin-updates)'{-cpu,--check-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npu --no-plugin-updates)'{-npu,--no-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npr --no-plugin-registry)'{-npr,--no-plugin-registry}'[Ineffective, only kept for backward compatibility]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password)'{-D,--define}'[Define a system property]' \
   && ret=0
 
