@@ -11,8 +11,8 @@ _arguments -C \
   '(*)'{-cpu,--check-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
   '(*)'{-D,--define}'[Define a system property]' \
   '(*)'{-e,--errors}'[Produce execution error messages]' \
-  '(*)'{-emp,--encrypt-master-password}'[Encrypt master security password]' \
-  '(*)'{-ep,--encrypt-password}'[Encrypt server password]' \
+  '(- 1 *)'{-emp,--encrypt-master-password}'[Encrypt master security password]' \
+  '(- 1 *)'{-ep,--encrypt-password}'[Encrypt server password]' \
   '(*)'{-f,--file}'[Force the use of an alternate POM file.]:file:->file' \
   '(*)'{-fae,--fail-at-end}'[Only fail the build afterwards; allow all non-impacted builds to continue]' \
   '(*)'{-ff,--fail-fast}'[Stop at first failure in reactorized builds]' \
