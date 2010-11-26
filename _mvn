@@ -16,9 +16,9 @@ _arguments -C \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -e --errors)'{-e,--errors}'[Produce execution error messages]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -f --file)'{-f,--file}'[Force the use of an alternate POM file.]:file:->file' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -l --log-file)'{-l,--log-file}'[Log file to where all build output will go.]:log-file:->log-file' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -fae --fail-at-end)'{-fae,--fail-at-end}'[Only fail the build afterwards; allow all non-impacted builds to continue]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -ff --fail-fast)'{-ff,--fail-fast}'[Stop at first failure in reactorized builds]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -fn --fail-never)'{-fn,--fail-never}'[NEVER fail the build, regardless of project result]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -fae --fail-at-end -ff --fail-fast -fn --fail-never)'{-fae,--fail-at-end}'[Only fail the build afterwards; allow all non-impacted builds to continue]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -ff --fail-fast -fae --fail-at-end -fn --fail-never)'{-ff,--fail-fast}'[Stop at first failure in reactorized builds]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -fn --fail-never -fae --fail-at-end -ff --fail-fast)'{-fn,--fail-never}'[NEVER fail the build, regardless of project result]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -N --non-recursive)'{-N,--non-recursive}'[Do not recurse into sub-projects]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -o --offline)'{-o,--offline}'[Work offline]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -P --activate-profiles)'{-P,--activate-profiles}'[Comma-delimited list of profiles to activate]' \
