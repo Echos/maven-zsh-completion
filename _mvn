@@ -13,13 +13,13 @@ _arguments -C \
   '(*)'{-e,--errors}'[Produce execution error messages]' \
   '(*)'{-emp,--encrypt-master-password}'[Encrypt master security password]' \
   '(*)'{-ep,--encrypt-password}'[Encrypt server password]' \
-  '(*)'{-f,--file}'[Force the use of an alternate POM file.]' \
+  '(*)'{-f,--file}'[Force the use of an alternate POM file.]:file:->file' \
   '(*)'{-fae,--fail-at-end}'[Only fail the build afterwards; allow all non-impacted builds to continue]' \
   '(*)'{-ff,--fail-fast}'[Stop at first failure in reactorized builds]' \
   '(*)'{-fn,--fail-never}'[NEVER fail the build, regardless of project result]' \
-  '(*)'{-gs,--global-settings}'[Alternate path for the global settings file]' \
+  '(*)'{-gs,--global-settings}'[Alternate path for the global settings file]:global-settings:->global-settings' \
   '(*)'{-h,--help}'[Display help information]' \
-  '(*)'{-l,--log-file}'[Log file to where all build output will go.]' \
+  '(*)'{-l,--log-file}'[Log file to where all build output will go.]:log-file:->log-file' \
   '(*)'{-N,--non-recursive}'[Do not recurse into sub-projects]' \
   '(*)'{-npr,--no-plugin-registry}'[Ineffective, only kept for backward compatibility]' \
   '(*)'{-npu,--no-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
@@ -29,12 +29,30 @@ _arguments -C \
   '(*)'{-pl,--projects}'[Build specified reactor projects instead of all projects. A project can be specified by '\['groupId'\]':artifactId or by its relative path.]' \
   '(*)'{-q,--quiet}'[Quiet output - only show errors]' \
   '(*)'{-rf,--resume-from}'[Resume reactor from specified project]' \
-  '(*)'{-s,--settings}'[Alternate path for the user settings file]' \
+  '(*)'{-s,--settings}'[Alternate path for the user settings file]:settings:->settings' \
   '(*)'{-T,--threads}'[Thread count, for instance 2.0C where C is core multiplied]' \
-  '(*)'{-t,--toolchains}'[Alternate path for the user toolchains file]' \
+  '(*)'{-t,--toolchains}'[Alternate path for the user toolchains file]:toolchains:->toolchains' \
   '(*)'{-U,--update-snapshots}'[Forces a check for updated releases and snapshots on remote repositories]' \
   '(*)'{-up,--update-plugins}'[Ineffective, only kept for backward compatibility]' \
   '(*)'{-V,--show-version}'[Display version information WITHOUT stopping build]' \
   '(*)'{-v,--version}'[Display version information]' \
   '(*)'{-X,--debug}'[Produce execution debug output]' \
-  && ret=0  
+  && ret=0
+
+case "$state" in
+  file)
+    _wanted files expl file _files -g '*pom*\.xml*' && ret=0
+  ;;
+  settings)
+    _wanted settings expl settings _files -g '*settings*\.xml*' && ret=0
+  ;;
+  global-settings)
+    _wanted global-settings expl global-settings _files -g '*settings*\.xml*' && ret=0
+  ;;
+  log-file)
+    _wanted log-files expl log-file _files && ret=0
+  ;;
+  toolchains)
+    _wanted toolchains expl toolchains _files && ret=0
+  ;;
+esac
