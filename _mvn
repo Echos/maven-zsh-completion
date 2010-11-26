@@ -30,10 +30,10 @@ _arguments -C \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -gs --global-settings)'{-gs,--global-settings}'[Alternate path for the global settings file]:global-settings:->global-settings' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -T --threads)'{-T,--threads}'[Thread count, for instance 2.0C where C is core multiplied]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -t --toolchains)'{-t,--toolchains}'[Alternate path for the user toolchains file]:toolchains:->toolchains' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -U --update-snapshots)'{-U,--update-snapshots}'[Forces a check for updated releases and snapshots on remote repositories]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -U --update-snapshots -o --offline)'{-U,--update-snapshots}'[Forces a check for updated releases and snapshots on remote repositories]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -nsu --no-snapshot-updates)'{-nsu,--no-snapshot-updates}'[Supress SNAPSHOT updates]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -up --update-plugins)'{-up,--update-plugins}'[Ineffective, only kept for backward compatibility]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -cpu --check-plugin-updates)'{-cpu,--check-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -up --update-plugins -o --offline)'{-up,--update-plugins}'[Ineffective, only kept for backward compatibility]' \
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -cpu --check-plugin-updates -o --offline)'{-cpu,--check-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npu --no-plugin-updates)'{-npu,--no-plugin-updates}'[Ineffective, only kept for backward compatibility]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npr --no-plugin-registry)'{-npr,--no-plugin-registry}'[Ineffective, only kept for backward compatibility]' \
   '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password)'{-D,--define}'[Define a system property]' \
