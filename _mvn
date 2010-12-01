@@ -1,4 +1,4 @@
-#compdef mvn
+#compdef mvn mvnDebug
 
 local curcontext="$curcontext" state line cmds ret=1
 
