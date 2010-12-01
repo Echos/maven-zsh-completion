@@ -2,37 +2,59 @@
 
 local curcontext="$curcontext" state line cmds ret=1
 
+common_options=(
+  '(- 1 *)'{-h,--help}'[Display help information]'
+  '(- 1 *)'{-v,--version}'[Display version information]'
+  '(- 1 *)'{-emp,--encrypt-master-password}'[Encrypt master security password]'
+  '(- 1 *)'{-ep,--encrypt-password}'[Encrypt server password]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -B --batch-mode)'{-B,--batch-mode}'[Run in non-interactive (batch) mode]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -V --show-version)'{-V,--show-version}'[Display version information WITHOUT stopping build]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -q --quiet -X --debug)'{-q,--quiet}'[Quiet output - only show errors]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -X --debug -q --quiet)'{-X,--debug}'[Produce execution debug output]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -N --non-recursive)'{-N,--non-recursive}'[Do not recurse into sub-projects]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -C --strict-checksums -c --lax-checksums)'{-C,--strict-checksums}'[Fail the build if checksums don'\''t match]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -c --lax-checksums -C --strict-checksums)'{-c,--lax-checksums}'[Warn if checksums don'\''t match]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -e --errors)'{-e,--errors}'[Produce execution error messages]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -f --file)'{-f,--file}'[Force the use of an alternate POM file.]:file:->file'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -s --settings)'{-s,--settings}'[Alternate path for the user settings file]:settings:->settings'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -gs --global-settings)'{-gs,--global-settings}'[Alternate path for the global settings file]:global-settings:->global-settings'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -fae --fail-at-end -ff --fail-fast -fn --fail-never)'{-fae,--fail-at-end}'[Only fail the build afterwards; allow all non-impacted builds to continue]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -ff --fail-fast -fae --fail-at-end -fn --fail-never)'{-ff,--fail-fast}'[Stop at first failure in reactorized builds]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -fn --fail-never -fae --fail-at-end -ff --fail-fast)'{-fn,--fail-never}'[NEVER fail the build, regardless of project result]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -P --activate-profiles)'{-P,--activate-profiles}'[Comma-delimited list of profiles to activate]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -pl --projects)'{-pl,--projects}'[Build specified reactor projects instead of all projects. A project can be specified by '\['groupId'\]':artifactId or by its relative path.]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -am --also-make)'{-am,--also-make}'[If project list is specified, also build projects required by the list]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -amd --also-make-dependents)'{-amd,--also-make-dependents}'[If project list is specified, also build projects that depend on projects on the list]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -rf --resume-from)'{-rf,--resume-from}'[Resume reactor from specified project]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -o --offline -U --update-snapshots -cpu --check-plugin-updates -up --update-plugins)'{-o,--offline}'[Work offline]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -U --update-snapshots -nsu --no-snapshot-updates -o --offline)'{-U,--update-snapshots}'[Forces a check for updated releases and snapshots on remote repositories]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -nsu --no-snapshot-updates -U --update-snapshots -o --offline)'{-nsu,--no-snapshot-updates}'[Supress SNAPSHOT updates]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password)'{-D,--define}'[Define a system property]'
+)
+
+maven2_options=(
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -cpu --check-plugin-updates -up --update-plugins -npu --no-plugin-updates -o --offline)'{-cpu,--check-plugin-updates,-up,--update-plugins}'[Force upToDate check for any relevant registered plugins.]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npr --no-plugin-registry)'{-npr,--no-plugin-registry}'[Don'\''t use ~/.m2/plugin-registry.xml for plugin versions.]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npu --no-plugin-updates -cpu --check-plugin-updates -up --update-plugins)'{-npu,--no-plugin-updates}'[Suppress upToDate check for any relevant registered plugins.]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -r --reactor)'{-r,--reactor}'[Dynamically build reactor from subdirectories.]'
+)
+
+maven3_options=(
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -T --threads)'{-T,--threads}'[Thread count, for instance 2.0C where C is core multiplied]'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -t --toolchains)'{-t,--toolchains}'[Alternate path for the user toolchains file]:toolchains:->toolchains'
+  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -l --log-file)'{-l,--log-file}'[Log file to where all build output will go.]:log-file:->log-file'
+)
+
+version=$(_call_program version "$words[1]" --version | grep --perl-regexp --only-matching '(?<=Maven )[0-9]+')
+if [[ $version -eq 2 ]]; then
+  version_specific_options=($maven2_options)
+elif [[ $version -eq 3 ]]; then
+  version_specific_options=($maven3_options)
+fi
+
 _arguments -C \
-  '(- 1 *)'{-h,--help}'[Display help information]' \
-  '(- 1 *)'{-v,--version}'[Display version information]' \
-  '(- 1 *)'{-emp,--encrypt-master-password}'[Encrypt master security password]' \
-  '(- 1 *)'{-ep,--encrypt-password}'[Encrypt server password]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -B --batch-mode)'{-B,--batch-mode}'[Run in non-interactive (batch) mode]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -V --show-version)'{-V,--show-version}'[Display version information WITHOUT stopping build]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -q --quiet -X --debug)'{-q,--quiet}'[Quiet output - only show errors]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -X --debug -q --quiet)'{-X,--debug}'[Produce execution debug output]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -N --non-recursive)'{-N,--non-recursive}'[Do not recurse into sub-projects]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -C --strict-checksums -c --lax-checksums)'{-C,--strict-checksums}'[Fail the build if checksums don'\''t match]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -c --lax-checksums -C --strict-checksums)'{-c,--lax-checksums}'[Warn if checksums don'\''t match]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -e --errors)'{-e,--errors}'[Produce execution error messages]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -f --file)'{-f,--file}'[Force the use of an alternate POM file.]:file:->file' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -l --log-file)'{-l,--log-file}'[Log file to where all build output will go.]:log-file:->log-file' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -s --settings)'{-s,--settings}'[Alternate path for the user settings file]:settings:->settings' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -gs --global-settings)'{-gs,--global-settings}'[Alternate path for the global settings file]:global-settings:->global-settings' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -fae --fail-at-end -ff --fail-fast -fn --fail-never)'{-fae,--fail-at-end}'[Only fail the build afterwards; allow all non-impacted builds to continue]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -ff --fail-fast -fae --fail-at-end -fn --fail-never)'{-ff,--fail-fast}'[Stop at first failure in reactorized builds]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -fn --fail-never -fae --fail-at-end -ff --fail-fast)'{-fn,--fail-never}'[NEVER fail the build, regardless of project result]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -P --activate-profiles)'{-P,--activate-profiles}'[Comma-delimited list of profiles to activate]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -pl --projects)'{-pl,--projects}'[Build specified reactor projects instead of all projects. A project can be specified by '\['groupId'\]':artifactId or by its relative path.]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -am --also-make)'{-am,--also-make}'[If project list is specified, also build projects required by the list]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -amd --also-make-dependents)'{-amd,--also-make-dependents}'[If project list is specified, also build projects that depend on projects on the list]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -rf --resume-from)'{-rf,--resume-from}'[Resume reactor from specified project]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -T --threads)'{-T,--threads}'[Thread count, for instance 2.0C where C is core multiplied]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -t --toolchains)'{-t,--toolchains}'[Alternate path for the user toolchains file]:toolchains:->toolchains' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -o --offline -U --update-snapshots -nsu --no-snapshot-updates)'{-o,--offline}'[Work offline]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -U --update-snapshots -nsu --no-snapshot-updates -o --offline)'{-U,--update-snapshots}'[Forces a check for updated releases and snapshots on remote repositories]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -nsu --no-snapshot-updates -U --update-snapshots -o --offline)'{-nsu,--no-snapshot-updates}'[Supress SNAPSHOT updates]' \
-  '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password)'{-D,--define}'[Define a system property]' \
+  $common_options \
+  $version_specific_options \
   '*: :->args' \
   && ret=0
 
@@ -83,6 +105,7 @@ case "$state" in
                       pre-site\:executes\ processes\ needed\ prior\ to\ the\ actual\ project\ site\ generation. \
                       site\:generates\ the\ projects\ site\ documentation. \
                       post-site\:executes\ processes\ needed\ to\ finalize\ the\ site\ generation,\ and\ to\ prepare\ for\ site\ deployment. \
-                      site-deploy\:deploys\ the\ generated\ site\ documentation\ to\ the\ specified\ web\ server.))'
+                      site-deploy\:deploys\ the\ generated\ site\ documentation\ to\ the\ specified\ web\ server.))' \
+    && ret=0
   ;;
 esac
