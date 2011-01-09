@@ -33,16 +33,16 @@ _mvn() {
   mvn_version=$(_call_program version "$words[1]" --version | grep --perl-regexp --only-matching '(?<=Maven )[0-9]+')
   if [[ $mvn_version -eq 2 ]]; then
     version_specific_options=(
-      '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -cpu --check-plugin-updates -up --update-plugins -npu --no-plugin-updates -o --offline)'{-cpu,--check-plugin-updates,-up,--update-plugins}'[Force upToDate check for any relevant registered plugins.]'
-      '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npr --no-plugin-registry)'{-npr,--no-plugin-registry}'[Don'\''t use ~/.m2/plugin-registry.xml for plugin versions.]'
-      '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npu --no-plugin-updates -cpu --check-plugin-updates -up --update-plugins)'{-npu,--no-plugin-updates}'[Suppress upToDate check for any relevant registered plugins.]'
-      '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -r --reactor)'{-r,--reactor}'[Dynamically build reactor from subdirectories.]:reactor:->reactor'
+    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -cpu --check-plugin-updates -up --update-plugins -npu --no-plugin-updates -o --offline)'{-cpu,--check-plugin-updates,-up,--update-plugins}'[Force upToDate check for any relevant registered plugins.]'
+    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npr --no-plugin-registry)'{-npr,--no-plugin-registry}'[Don'\''t use ~/.m2/plugin-registry.xml for plugin versions.]'
+    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npu --no-plugin-updates -cpu --check-plugin-updates -up --update-plugins)'{-npu,--no-plugin-updates}'[Suppress upToDate check for any relevant registered plugins.]'
+    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -r --reactor)'{-r,--reactor}'[Dynamically build reactor from subdirectories.]:reactor:->reactor'
     )
   elif [[ $mvn_version -eq 3 ]]; then
     version_specific_options=(
-      '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -T --threads)'{-T+,--threads=}'[Thread count, for instance 2.0C where C is core multiplied]:thread-count:->thread-count'
-      '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -t --toolchains)'{-t,--toolchains=}'[Alternate path for the user toolchains file]:toolchains-file:->toolchains-file'
-      '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -l --log-file)'{-l,--log-file=}'[Log file to where all build output will go.]:log-file:->log-file'
+    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -T --threads)'{-T+,--threads=}'[Thread count, for instance 2.0C where C is core multiplied]:thread-count:->thread-count'
+    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -t --toolchains)'{-t,--toolchains=}'[Alternate path for the user toolchains file]:toolchains-file:->toolchains-file'
+    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -l --log-file)'{-l,--log-file=}'[Log file to where all build output will go.]:log-file:->log-file'
     )
   fi
 
@@ -79,45 +79,46 @@ _mvn() {
     '*: :->args' \
     && ret=0
 
-    [[ -n "$state" ]] &&
+  if [[ -n "$state" ]]; then
     case "$state" in
       pom-file)
         _wanted pom-files expl pom-file _mvn_pom_files && ret=0
-      ;;
+        ;;
       settings-file)
         _wanted settings-files expl settings-file _mvn_settings_files && ret=0
-      ;;
+        ;;
       profile)
         _wanted profiles expl profile _mvn_profiles && ret=0
-      ;;
+        ;;
       project)
         _wanted projects expl project _mvn_projects && ret=0
-      ;;
+        ;;
       project-list)
         _wanted project-lists expl project-list _mvn_project_lists && ret=0
-      ;;
+        ;;
       log-file)
         _wanted log-files expl log-file _mvn_log_files && ret=0
-      ;;
+        ;;
       toolchains-file)
         _wanted toolchains-files expl toolchains-file _mvn_toolchains_files && ret=0
-      ;;
+        ;;
       property)
         _wanted properties expl property _mvn_properties && ret=0
-      ;;
+        ;;
       reactor)
         _wanted reactors expl reactor _mvn_reactors && ret=0
-      ;;
+        ;;
       thread-count)
         _wanted thread-counts expl thread-count _mvn_thread_counts && ret=0
-      ;;
+        ;;
       args)
         _alternative \
           'phases:phase:_mvn_phases' \
           'goals:goal:_mvn_goals' \
-        && ret=0
-      ;;
+          && ret=0
+        ;;
     esac
+  fi
 }
 
 _mvn_phases() {
@@ -154,7 +155,7 @@ _mvn_phases() {
     'site[generates\ the\ projects\ site\ documentation.]' \
     'post-site[executes\ processes\ needed\ to\ finalize\ the\ site\ generation,\ and\ to\ prepare\ for\ site\ deployment.]' \
     'site-deploy[deploys\ the\ generated\ site\ documentation\ to\ the\ specified\ web\ server.]' \
-  && ret=0
+    && ret=0
 }
 
 _mvn_goals(){
