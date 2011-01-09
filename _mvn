@@ -29,22 +29,24 @@ _mvn() {
 
   local curcontext="$curcontext" state line cmds ret=1 mvn_version
 
+  # FIXME Should use _pick_variant
   mvn_version=$(_call_program version "$words[1]" --version | grep --perl-regexp --only-matching '(?<=Maven )[0-9]+')
   if [[ $mvn_version -eq 2 ]]; then
     version_specific_options=(
       '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -cpu --check-plugin-updates -up --update-plugins -npu --no-plugin-updates -o --offline)'{-cpu,--check-plugin-updates,-up,--update-plugins}'[Force upToDate check for any relevant registered plugins.]'
       '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npr --no-plugin-registry)'{-npr,--no-plugin-registry}'[Don'\''t use ~/.m2/plugin-registry.xml for plugin versions.]'
       '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npu --no-plugin-updates -cpu --check-plugin-updates -up --update-plugins)'{-npu,--no-plugin-updates}'[Suppress upToDate check for any relevant registered plugins.]'
-      '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -r --reactor)'{-r,--reactor}'[Dynamically build reactor from subdirectories.]'
+      '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -r --reactor)'{-r,--reactor}'[Dynamically build reactor from subdirectories.]:reactor:->reactor'
     )
   elif [[ $mvn_version -eq 3 ]]; then
     version_specific_options=(
-      '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -T --threads)'{-T+,--threads=}'[Thread count, for instance 2.0C where C is core multiplied]'
+      '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -T --threads)'{-T+,--threads=}'[Thread count, for instance 2.0C where C is core multiplied]:thread-count:->thread-count'
       '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -t --toolchains)'{-t,--toolchains=}'[Alternate path for the user toolchains file]:toolchains-file:->toolchains-file'
       '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -l --log-file)'{-l,--log-file=}'[Log file to where all build output will go.]:log-file:->log-file'
     )
   fi
 
+  # FIXME -am and -amd should only be added if -pl is present
   _arguments -C \
     '(- 1 *)'{-h,--help}'[Display help information]' \
     '(- 1 *)'{-v,--version}'[Display version information]' \
@@ -65,10 +67,10 @@ _mvn() {
     '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -ff --fail-fast -fae --fail-at-end -fn --fail-never)'{-ff,--fail-fast}'[Stop at first failure in reactorized builds]' \
     '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -fn --fail-never -fae --fail-at-end -ff --fail-fast)'{-fn,--fail-never}'[NEVER fail the build, regardless of project result]' \
     '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -P --activate-profiles)'{-P,--activate-profiles=}'[Comma-delimited list of profiles to activate]:profile:->profile' \
-    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -pl --projects)'{-pl,--projects=}'[Build specified reactor projects instead of all projects. A project can be specified by groupId:artifactId or by its relative path.]:project:->project' \
+    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -pl --projects)'{-pl,--projects=}'[Build specified reactor projects instead of all projects. A project can be specified by groupId:artifactId or by its relative path.]:project-list:->project-list' \
     '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -am --also-make)'{-am,--also-make}'[If project list is specified, also build projects required by the list]' \
     '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -amd --also-make-dependents)'{-amd,--also-make-dependents}'[If project list is specified, also build projects that depend on projects on the list]' \
-    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -rf --resume-from)'{-rf,--resume-from=}'[Resume reactor from specified project]' \
+    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -rf --resume-from)'{-rf,--resume-from=}'[Resume reactor from specified project]:project:->project' \
     '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -o --offline -U --update-snapshots -cpu --check-plugin-updates -up --update-plugins)'{-o,--offline}'[Work offline]' \
     '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -U --update-snapshots -nsu --no-snapshot-updates -o --offline)'{-U,--update-snapshots}'[Forces a check for updated releases and snapshots on remote repositories]' \
     '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -nsu --no-snapshot-updates -U --update-snapshots -o --offline)'{-nsu,--no-snapshot-updates}'[Supress SNAPSHOT updates]' \
@@ -89,7 +91,10 @@ _mvn() {
         _wanted profiles expl profile _mvn_profiles && ret=0
       ;;
       project)
-        _wanted project expl project _mvn_projects && ret=0
+        _wanted projects expl project _mvn_projects && ret=0
+      ;;
+      project-list)
+        _wanted project-lists expl project-list _mvn_project_lists && ret=0
       ;;
       log-file)
         _wanted log-files expl log-file _mvn_log_files && ret=0
@@ -99,6 +104,12 @@ _mvn() {
       ;;
       property)
         _wanted properties expl property _mvn_properties && ret=0
+      ;;
+      reactor)
+        _wanted reactors expl reactor _mvn_reactors && ret=0
+      ;;
+      thread-count)
+        _wanted thread-counts expl thread-count _mvn_thread_counts && ret=0
       ;;
       args)
         _alternative \
@@ -147,8 +158,30 @@ _mvn_phases() {
 }
 
 _mvn_goals(){
-  # TODO to be inplemented
-    _message -e goals 'goal' && ret=0
+  # TODO to be implemented
+  local ret=1
+  #goals=(
+  #  'release:clean'
+  #  'release:prepare'
+  #  'release:prepare-with-pom'
+  #  'release:rollback'
+  #  'release:perform'
+  #  'release:stage'
+  #  'release:branch'
+  #  'release:update-versions'
+  #)
+  #_multi_parts ':' goals
+  #_sep_parts
+}
+
+_mvn_reactors(){
+  # FIXME No idea what kind of value the "--reactor" is supposed to take
+  local ret=1
+  _message -e reactors 'reactor' && ret=0
+}
+
+_mvn_thread_counts(){
+  _message -e thread-counts 'thread count' && ret=0
 }
 
 _mvn_pom_files(){
@@ -190,7 +223,16 @@ _mvn_profiles() {
 _mvn_projects() {
   # TODO projects can also be given in the form [groupId:]artifactId.
   local ret=1 projects
-  for project in $(command ls */**/pom.xml 2>/dev/null); do # FIXME Only recurse when needed ?
+  for project in $(command ls */(**~target)/pom.xml 2>/dev/null); do # FIXME Only recurse when needed ?
+    projects+=("$(dirname $project)[]") # TODO: Add project name as description
+  done
+  _values 'project list' "$projects[@]" && ret=0
+}
+
+_mvn_project_lists() {
+  # TODO projects can also be given in the form [groupId:]artifactId.
+  local ret=1 projects
+  for project in $(command ls */(**~target)/pom.xml 2>/dev/null); do # FIXME Only recurse when needed ?
     projects+=("$(dirname $project)[]") # TODO: Add project name as description
   done
   _values -s , 'project' "$projects[@]" && ret=0
