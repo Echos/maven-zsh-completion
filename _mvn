@@ -29,20 +29,18 @@ _mvn() {
 
   local curcontext="$curcontext" state line cmds ret=1 mvn_version
 
-  # FIXME Should use _pick_variant
-  mvn_version=$(_call_program version "$words[1]" --version | grep --perl-regexp --only-matching '(?<=Maven )[0-9]+')
-  if [[ $mvn_version -eq 2 ]]; then
+  if _pick_variant maven3=Maven\ 3 maven2 --version; then
+    version_specific_options=(
+    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -T --threads)'{-T+,--threads=}'[Thread count, for instance 2.0C where C is core multiplied]:thread-count:->thread-count'
+    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -t --toolchains)'{-t,--toolchains=}'[Alternate path for the user toolchains file]:toolchains-file:->toolchains-file'
+    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -l --log-file)'{-l,--log-file=}'[Log file to where all build output will go.]:log-file:->log-file'
+    )
+  else
     version_specific_options=(
     '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -cpu --check-plugin-updates -up --update-plugins -npu --no-plugin-updates -o --offline)'{-cpu,--check-plugin-updates,-up,--update-plugins}'[Force upToDate check for any relevant registered plugins.]'
     '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npr --no-plugin-registry)'{-npr,--no-plugin-registry}'[Don'\''t use ~/.m2/plugin-registry.xml for plugin versions.]'
     '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -npu --no-plugin-updates -cpu --check-plugin-updates -up --update-plugins)'{-npu,--no-plugin-updates}'[Suppress upToDate check for any relevant registered plugins.]'
     '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -r --reactor)'{-r,--reactor}'[Dynamically build reactor from subdirectories.]:reactor:->reactor'
-    )
-  elif [[ $mvn_version -eq 3 ]]; then
-    version_specific_options=(
-    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -T --threads)'{-T+,--threads=}'[Thread count, for instance 2.0C where C is core multiplied]:thread-count:->thread-count'
-    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -t --toolchains)'{-t,--toolchains=}'[Alternate path for the user toolchains file]:toolchains-file:->toolchains-file'
-    '(-h --help -v --version -ep --encrypt-password -emp --encrypt-master-password -l --log-file)'{-l,--log-file=}'[Log file to where all build output will go.]:log-file:->log-file'
     )
   fi
 
